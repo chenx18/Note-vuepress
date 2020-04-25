@@ -1,0 +1,25 @@
+## Node
+  Node 是一个让 JavaScript 运行在服务端的开发平台，它让 JavaScript 成为与PHP、Python、Perl、Ruby 等服务端语言平起平坐的脚本语言。发布于2009年5月，由Ryan Dahl开发，实质是对Chrome V8引擎进行了封装。    
+  Node对一些特殊用例进行优化，提供替代的API，使得V8在非浏览器环境下运行得更好。V8引擎执行Javascript的速度非常快，性能非常好。Node是一个基于Chrome JavaScript运行时建立的平台， 用于方便地搭建响应速度快、易于扩展的网络应用。Node 使用事件驱动， 非阻塞I/O 模型而得以轻量和高效，非常适合在分布式设备上运行数据密集型的实时应用。 
+  <a href="https://baike.baidu.com/item/node.js/7567977" target="_blank">《百度百科》</a>
+
+  #### 安装Node.js   
+  从<a href="https://nodejs.org/zh-cn/" target="_blank">Node.js官网</a>下载对应平台的安装程序。   
+  在Windows上安装时务必选择全部组件，包括勾选Add to Path。    
+  安装完成后，在Windows环境下，请打开命令提示符，然后输入node -v，如果安装正常，你应该看到安装版本的输出：
+  ```js
+  node -v
+  v8.11.1
+  ```
+
+  #### Hello World！  
+  从Hello World！入门到放弃；   
+  新建一个js文件，写入如下Hello World！，并通过node命令执行；
+  ```js
+  // 文件名 hell.js
+  console.log('Hello World！');
+
+  // 终端执行 node hell.js， 输出 Hello World！
+  ```
+  程序执行后，不出意外，就会在终端输出 Hello World！
+
