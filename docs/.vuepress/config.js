@@ -4,7 +4,7 @@ const sidebarConfig = require('../../config/sidebar.js');
 module.exports = {
 
   // 页签标题 
-  title: '会飞的咸鱼',
+  title: '飞天咸鱼',
 
   // meta 中的描述文字，意义不大，SEO用
   description: '少年壮志当凌云 仗剑携酒江湖行',
