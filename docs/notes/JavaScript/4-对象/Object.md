@@ -45,7 +45,25 @@ let obj ={
 
 /** ['xx'] */
   // 访问对象属性     
-  obj['age'];     // 19     
+  obj['age'];     // 19  
+
+/** 对象的属性名一定不能是引用类型值，默认会把引用类型值转换为字符串进行处理*/   
+  let a = { x: 100};
+  let b = {y: 200};
+  let obj = {};
+  obj[a] = 1000;
+    // => obj["a.toString()"]
+    // => obj["[object Object]"] = 1000;
+  obj[b] = 2000;
+    // => obj["b.toString()"]
+    // => obj["[object Object]"] = 2000;
+  console.log(obj)  // {[object Object]: 2000}
+
+  let obj2 = {}
+  obj2['x'] = 'zhang';
+  obj2['y'] = 200;
+  console.log(obj2)  // {x: "zhang", y: 200}
+
 
 /** delete */
   // 删除成功返回true

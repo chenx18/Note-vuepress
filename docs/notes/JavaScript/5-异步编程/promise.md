@@ -1,0 +1,224 @@
+# [Promise](https://es6.ruanyifeng.com/#docs/promise)
+ > promise 异步编程的一种解决方案 其实是一个构造函数，自身有all reject resolve 方法，原型上有 then catch 方法；
+ 
+#### 1.1 特点：   
+  1. 对象状态不受外界影响。   
+      - 三种状态： 
+          - pending（进行中）   
+          - fulfilled （操作成功） 
+          - rejected （操作失败）     
+      - 只有异步操作的结果可以决定当前是哪个状态，任何其他操作都无法改变这个状态    
+  2. 一旦状态改变，就不会再变化，任何时候都可以得到这个结果。   
+      - 对象改变有两种可能：    
+      - 从pending变成fulfilled
+      - 从pending变成rejected   
+      - 只要以上两个情况发生，状态就不会再改变，将一直保持一个结果，这时就称为 **resolved**   
+
+#### 1.2 优缺点
+  1. 有 Promise 对象，可以将异步操作 以 同步操作的流程表达出来；     
+  2. 避免了层层嵌套的回调函数，控制异步操作更加容易；         
+  3. 无法取消 Promise, 一旦执行，就无法中途取消；   
+  4. 不设置回调，Promise内部会抛出错误，无法反应到外部；    
+  5. 处于pending状态时，无法得知目前进展到哪一个阶段；    
+
+
+  #### 2.1 创建一个Promsise：
+  > resolve 、reject 、then、catch 用法；    
+  ```js
+    const premise = () => {
+      return new Promise((resolve,reject) => {
+        setTimeout(()=> {
+          let num = Math.ceil(Math.random()*20); //生成1-10的随机数
+          if(num <= 10 ){
+            resolve(num)
+          }else{
+            reject('数字大于10了即将执行失败回调');
+          }
+        },2000)
+      })
+    }
+    premise().then((res) => {
+      console.log(res)    // 4
+    }).catch(err => {
+      console.log(err)   // 数字大于10了即将执行失败回调
+    })
+  ```
+
+
+  #### 2.2 all用法
+  > all是等所有的异步操作都执行完了再执行then方法, 并行执行异步操作的能力，且在所有异步操作执行完后,且执行结果都是成功的时候才执行回调。
+
+  ```js
+    function promise1(){
+      return new Promise((resolve, reject)=>{
+        setTimeout(()=>{
+          var num = Math.ceil(Math.random()*20); //生成1-10的随机数
+          if(num<=1){
+            resolve(`promise1: ${num}`);
+          }
+          else{
+            reject(`promise1: ${num} 大于 1 了即将执行失败回调`);
+          }
+        }, 1000);
+      })
+    }
+    function promise2(){
+      return new Promise((resolve, reject)=>{
+        setTimeout(()=>{
+          var num = Math.ceil(Math.random()*20); //生成1-10的随机数
+          if(num<=2){
+            resolve(`promise2: ${num}`);
+          }
+          else{
+            reject(`promise2: ${num} 大于 2 了即将执行失败回调`);
+          }
+        }, 2000);
+      })
+    }
+    function promise3(){
+      return new Promise((resolve, reject) => {
+        setTimeout(()=>{
+          var num = Math.ceil(Math.random()*20); //生成1-10的随机数
+          if(num<=3){
+            resolve(`promise3: ${num}`);
+          }
+          else{
+            reject(`promise3: ${num} 大于 3 了即将执行失败回调`);
+          }
+        }, 1000);
+      })
+    }
+
+    Promise
+      .all([promise3(), promise2(), promise1()])
+      .then((res) => {
+        console.log(`res: ${res}`);
+      }).catch(err => {
+        console.log(`err: ${err}`)
+      });
+  ```
+
+  #### 2.3 race的用法
+  > 谁先执行完成就先执行回调。先执行完的不管是进行了race的成功回调还是失败回调，其余的将不会再进入race的任何回调
+
+  ```js
+    function promise1(){
+      return new Promise((resolve, reject)=>{
+        setTimeout(()=>{
+          var num = Math.ceil(Math.random()*20); //生成1-10的随机数
+          console.log('1s随机数生成的值：',num)
+          if(num<=1){
+            resolve(`promise1: ${num}`);
+          }else{
+            reject(`promise1: ${num} 大于 1 了即将执行失败回调`);
+          }
+        }, 1000);
+      })
+    }
+    function promise2(){
+      return new Promise((resolve, reject)=>{
+        setTimeout(()=>{
+          var num = Math.ceil(Math.random()*20); //生成1-10的随机数
+          console.log('2s随机数生成的值：',num)
+          if(num<=2){
+            resolve(`promise2: ${num}`);
+          }else{
+            reject(`promise2: ${num} 大于 2 了即将执行失败回调`);
+          }
+        }, 2000);
+      })
+    }
+    function promise3(){
+      return new Promise((resolve, reject) => {
+        setTimeout(()=>{
+          var num = Math.ceil(Math.random()*20); //生成1-10的随机数
+          console.log('3s随机数生成的值：',num)
+          if(num<=3){
+            resolve(`promise3: ${num}`);
+          }else{
+            reject(`promise3: ${num} 大于 3 了即将执行失败回调`);
+          }
+        }, 3000);
+      })
+    }
+
+    Promise
+      .race([promise3(), promise2(), promise1()])
+      .then(
+        (res) => {
+          console.log(`res: ${res}`);
+        },
+        (reason) => {
+          console.log(`reason: ${reason}`)
+        }
+      )
+  ```
+
+  #### 2.4 顺序执行
+  - Promise的优势在于，可以在then方法中继续写Promise对象并返回，然后继续调用then来进行回调操作。  
+  - Promise 精髓在于“状态” ，用维护状态、传递状态的方式来使得回调函数能够及时调用，它比传递callback函数要简单、灵活  
+  ```js
+    function promise1(){
+      return new Promise((resolve, reject)=>{
+        setTimeout(()=>{
+          var num = Math.ceil(Math.random()*20); //生成1-10的随机数
+          console.log('1s随机数生成的值：',num)
+          if(num<=1){
+            resolve(`promise1: ${num}`);
+          }else{
+            reject(`promise1: ${num} 大于 1 了即将执行失败回调`);
+          }
+        }, 1000);
+      })
+    }
+    function promise2(){
+      return new Promise((resolve, reject)=>{
+        setTimeout(()=>{
+          var num = Math.ceil(Math.random()*20); //生成1-10的随机数
+          console.log('2s随机数生成的值：',num)
+          if(num<=2){
+            resolve(`promise2: ${num}`);
+          }else{
+            reject(`promise2: ${num} 大于 2 了即将执行失败回调`);
+          }
+        }, 2000);
+      })
+    }
+    function promise3(){
+      return new Promise((resolve, reject) => {
+        setTimeout(()=>{
+          var num = Math.ceil(Math.random()*20); //生成1-10的随机数
+          console.log('3s随机数生成的值：',num)
+          if(num<=3){
+            resolve(`promise3: ${num}`);
+          }else{
+            reject(`promise3: ${num} 大于 3 了即将执行失败回调`);
+          }
+        }, 3000);
+      })
+    }
+
+    promise1()
+      .then(
+        (res) =>{
+          console.log(res)
+          return promise2();
+        }).catch(err => {
+          console.log(err)
+          return promise2();
+        })
+      .then(
+        (res) =>{
+          console.log(res)
+          return promise3();
+        }).catch(err => {
+          console.log(err)
+          return promise3();
+        })
+      .then(
+        (res3) =>{
+          console.log(res3)
+        }).catch(err => {
+          console.log(err)
+        })
+  ```
