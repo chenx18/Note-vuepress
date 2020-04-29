@@ -4,10 +4,10 @@ const sidebarConfig = require('../../config/sidebar.js');
 module.exports = {
 
   // 页签标题 
-  title: '飞天咸鱼',
+  title: '破釜成舟',
 
   // meta 中的描述文字，意义不大，SEO用
-  description: '少年壮志当凌云 仗剑携酒江湖行',
+  description: '前端',
 
   // 注入到当前页面的 HTML <head> 中的标签
   head: [
