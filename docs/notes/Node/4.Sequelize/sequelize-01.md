@@ -110,14 +110,14 @@ modelName | String | 模型的名称
 [options.paranoid] | Object | 设置 deletedAt 字段，当删除一条记录的时候，并不是真的销毁记录，而是通过该字段来标示，即保留数据，进行假删除，默认为false
 [options.freezeTableName] | Object | 禁用修改表名; 默认情况下，sequelize将自动将所有传递的模型名称（define的第一个参数）转换为复数。 默认为false
 [options.tableName] | Object | 手动设置表的实际名称
-[options.indexes] | Array<Object> | 定义表索引
+[options.indexes] | Array Object | 定义表索引
 [options.indexes[].name] | String | 索引的名称。默认为模型名称+ _ +字段连接
 [options.indexes[].type] | String | 索引类型。仅供mysql使用。其中之一UNIQUE，FULLTEXT和SPATIAL
 [options.indexes[].using] | String | 通过（USINGSQL中的语句）创建索引的方法。BTREE和HASH由mysql和postgres支持，postgres还支持GIST和GIN。
 [options.indexes[].operator] | String | 指定索引运算符
 [options.indexes[].unique] | boolean | 唯一索引，默认false
 [options.indexes[].concurrently] | boolean | PostgresSQL将构建索引而不需要任何写锁
-[options.indexes[].fields] | Array<string|Object> | 要索引的字段数组。
+[options.indexes[].fields] | Array string|Object | 要索引的字段数组。
 [更多] | · | http://docs.sequelizejs.com/class/lib/model.js~Model.html#static-method-init
 
 #### 五、模型
