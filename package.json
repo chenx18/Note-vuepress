@@ -14,5 +14,8 @@
   "license": "ISC",
   "devDependencies": {
     "vuepress": "^1.4.1"
+  },
+  "dependencies": {
+    "mermaid": "^8.5.0"
   }
 }
