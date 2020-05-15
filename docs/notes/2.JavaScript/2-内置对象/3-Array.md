@@ -203,9 +203,8 @@ console.log(ar1);     //  ["a", "b", "c"]
 - 选取数组的的一部分，并返回一个新数组，不会改变自身值。
 
 ```js
-let ar1 = ['a','b','c'];
-console.log(ar1.push('d','e')) // 5 (数组长度)
-console.log(ar1);     //  ['a','b','c','d','e']
+let ar1 = ['a','b','c',656,1204];
+console.log(ar1.slice(0,3)) // ["a", "b", "c"]
 ```
 
 ***4. pop(删除并返回最后一个元素)***
@@ -589,3 +588,164 @@ console.log(a1) // 34.5
 - for...of 循环也会遍历空位
 
 ## 10. 数组去重
+  #### 10.1 利用 Set 去重
+  ```js
+    /* 
+      1.返回值是一个去重的数组 
+      2.注意 Number 和 String 类型
+    */
+    var arr = ['one','two','three','one','three','two','four'];
+    let el = new Set(arr);
+    console.log(el); // ['one','two','three','four'];
+  ```
+
+  #### 10.2 利用 filter去重
+  ```js
+    let arr = ['one','two','three','one','three','two','four'];
+    let el = arr.filter((item,index)=>arr.indexOf(item)===index);
+    console.log(el); // ['one','two','three','four'];
+  ```
+
+  #### 10.3 利用 Map 数据结构去重
+  ```js
+    function arrayNonRepeatfy(arr) {
+      let map = new Map();
+      let array = new Array();  // 数组用于返回结果
+      for (let i = 0; i < arr.length; i++) {
+        if(map .has(arr[i])) {  // 如果有该key值
+          map .set(arr[i], true); 
+        } else { 
+          map .set(arr[i], false);   // 如果没有该key值
+          array .push(arr[i]);
+        }
+      } 
+      return array ;
+    }
+    var arr = [1,1,'true','true',true,true,15,15,false,false, undefined,undefined, null,null, NaN, NaN,'NaN', 0, 0, 'a', 'a',{},{}];
+    console.log(unique(arr))
+  ```
+
+  #### 10.4 利用includes
+  ```js
+    function unique(arr) {
+      if (!Array.isArray(arr)) {
+        console.log('type error!')
+        return
+      }
+      var array =[];
+      for(var i = 0; i < arr.length; i++) {
+        if( !array.includes( arr[i]) ) {//includes 检测数组是否有某个值
+          array.push(arr[i]);
+        }
+      }
+      return array
+    }
+    var arr = [1,1,'true','true',true,true,15,15,false,false, undefined,undefined, null,null, NaN, NaN,'NaN', 0, 0, 'a', 'a',{},{}];
+    console.log(unique(arr))
+    //[1, "true", true, 15, false, undefined, null, NaN, "NaN", 0, "a", {…}, {…}]     //{}没有去重
+  ```
+
+  #### 10.5 利用对象特性去重 (Object.keys)
+  ##### （1）对象方法 和 for 循环
+  ```js
+    /*
+      1.声明一个对象 obj,利用对象特性
+      2.循环每一项复印，使用 keys(values) 方法取出 key 值
+    */
+    var arr = ['one','two','three','one','three','two','four'];
+    var obj = {};
+    for(var i=0;i<arr.length;i++){
+        obj[arr[i]] = arr[i];
+    };
+    var el =  Object.keys(obj);
+    console.log(el) // ['one','two','three','four'];
+  ```
+
+  ##### （2）对象方法 和 arr.forEach
+  ```js
+    /* 
+      1. 和上面方法一致，只不过是使用了 forEach
+    */
+    var arr = ['one','two','three','one','three','two','four'];
+    var obj = {};
+    arr.forEach(function(ele,index,arr){
+        obj[arr[index]] = arr[index];
+    });
+    var el =  Object.keys(obj);
+    console.log(el) // ['one','two','three','four'];
+  ```
+
+  #### 10.6 利用for嵌套for，然后splice去重（ES5中最常用）
+  ```js
+    function unique(arr){            
+      for(var i=0; i<arr.length; i++){
+        for(var j=i+1; j<arr.length; j++){
+          if(arr[i]==arr[j]){         //第一个等同于第二个，splice方法删除第二个
+            arr.splice(j,1);
+            j--;
+          }
+        }
+      }
+    return arr;
+    }
+    var arr = [1,1,'true','true',true,true,15,15,false,false, undefined,undefined, null,null, NaN, NaN,'NaN', 0, 0, 'a', 'a',{},{}];
+    console.log(unique(arr))
+    //[1, "true", 15, false, undefined, NaN, NaN, "NaN", "a", {…}, {…}]     //NaN和{}没有去重，两个null直接消失了
+    // 双层循环，外层循环元素，内层循环时比较值。值相同时，则删去这个值。
+    // 想快速学习更多常用的ES6语法，可以看我之前的文章《学习ES6笔记──工作中常用到的ES6语法》。
+      
+  ```
+
+  #### 10.7 利用 indexOf() 和 lastIndexOf() 去重
+  ```js
+    /*
+      indexOf：从左往右查找目标字符串，是否包含 Value;
+              如果包含，返回第一次出现的索引;
+              如果不包含，返回 -1
+      indexOf 和 lastIndexOf() 方法一样
+      步骤：
+      1. 先声明一个空数组，用来存放去重后的数据
+      2. 遍历数组，判断每一项
+    */
+    let arr = ['one','two','three','one','three','two','four'];
+    let indexArr = [];
+    arr.forEach(item => {
+      if(indexArr.indexOf(item)===-1){
+          indexArr.push(item);
+      };
+    });
+    console.log(indexArr); // ['one','two','three','four'];
+  ```
+
+ 
+
+  
+  
+
+
+
+
+
+  #### 10.8 利用递归去重
+  ```js
+    function unique(arr) {
+      var array= arr;
+      var len = array.length;
+      array.sort(function(a,b){   //排序后更加方便去重
+          return a - b;
+      })
+      function loop(index){
+        if(index >= 1){
+          if(array[index] === array[index-1]){
+              array.splice(index,1);
+          }
+          loop(index - 1);    //递归loop，然后数组去重
+        }
+      }
+      loop(len-1);
+      return array;
+    }
+    var arr = [1,1,'true','true',true,true,15,15,false,false, undefined,undefined, null,null, NaN, NaN,'NaN', 0, 0, 'a', 'a',{},{}];
+    console.log(unique(arr))
+    //[1, "a", "true", true, 15, false, 1, {…}, null, NaN, NaN, "NaN", 0, "a", {…}, undefined]
+  ```
