@@ -7,7 +7,7 @@
   </summary>
 
   - MVC（Model-View-Controller）
-    - MVC是比较直观的架构模式，用户操作->View（负责接收用户的输入操作）->Controller（业务逻辑处理）->Model（数据持久化）->View（将结果反馈给View）
+    - 用户操作会请求服务端路由，路由会调用对应的控制器来处理业务，控制器将处理的结果返回给前端，前端根据接受数据渲染页面；
 
   - MVVM（Model-View-ViewModel）
     - 是将 **数据模型数据双向绑定** 的思想作为核心，因此在View和Model之间没有联系，通过ViewModel进行交互，
@@ -23,7 +23,7 @@
 
 </details>
 
-####  react和vue有哪些不同，说说你对这两个框架的看法
+#### react和vue有哪些不同，说说你对这两个框架的看法
 <details>
   <summary style="color: #3eaf7c;">
     <span style="cursor:pointer;color:#3eaf7c;font-size:14px;">解析</span>
@@ -44,18 +44,461 @@
 
 </details>
 
-- vue-router有两种传参方式 
-- vue的生命周期
-- 组件通信
-- vue同级组件间怎么传值
-- vue中父组件如何获取子组件的属性和方法
-- computed和watch的区别
-- v-show和v-if指令的共同点和不同点
-- v-if和v-for一起使用的弊端以及解决办法
-- vue中的事件修饰符主要有哪些？分别是什么作用
-- 介绍下什么是keep-alive
-- vue中如何解决页面不重新渲染问题
-- vuex是什么？怎么使用？哪种功能场景使用它？
-- vuex有哪几种属性？
+#### vue 两个核心
+<details>
+  <summary style="color: #3eaf7c;">
+    <span style="cursor:pointer;color:#3eaf7c;font-size:14px;">解析</span>
+  </summary>
 
-[2020前端最新面试题（vue篇）](https://blog.csdn.net/weixin_45325238/article/details/104968195?utm_medium=distribute.pc_relevant_right.none-task-blog-BlogCommendFromMachineLearnPai2-2.nonecase&depth_1-utm_source=distribute.pc_relevant_right.none-task-blog-BlogCommendFromMachineLearnPai2-2.nonecase)
+  - 数据驱动： ViewModel，保证数据和视图的一致性
+  - 组件化
+
+</details>
+
+#### Vue的原理
+<details>
+  <summary style="color: #3eaf7c;">
+    <span style="cursor:pointer;color:#3eaf7c;font-size:14px;">解析</span>
+  </summary>
+
+
+
+</details>
+
+#### vue 的双向绑定的原理
+<details>
+  <summary style="color: #3eaf7c;">
+    <span style="cursor:pointer;color:#3eaf7c;font-size:14px;">解析</span>
+  </summary>
+
+  - 通过 Object.defineProperty() 来劫持各个属性的 setter / getter, 在数据变动时发布消息给订阅者
+  - 触发相应的监听回调，这也是为什么 vue 不支持 IE8 的原因（IE8 不支持此 api， 且无法通过 polyfill 实现）
+
+</details>
+
+#### Vue 异步渲染
+<details>
+  <summary style="color: #3eaf7c;">
+    <span style="cursor:pointer;color:#3eaf7c;font-size:14px;">解析</span>
+  </summary>
+
+
+
+</details>
+
+#### vue 解决页面不重新渲染问题
+<details>
+  <summary style="color: #3eaf7c;">
+    <span style="cursor:pointer;color:#3eaf7c;font-size:14px;">解析</span>
+  </summary>
+
+
+
+</details>
+
+#### nextTick 实现原理
+<details>
+  <summary style="color: #3eaf7c;">
+    <span style="cursor:pointer;color:#3eaf7c;font-size:14px;">解析</span>
+  </summary>
+
+  - 在下次 DOM 更新循环结束之后执行延迟回调。在修改数据之后，立即使用这个回调函数，获取更新后的 DOM。
+
+
+</details>
+
+
+#### computed 和 watch的区别
+<details>
+  <summary style="color: #3eaf7c;">
+    <span style="cursor:pointer;color:#3eaf7c;font-size:14px;">解析</span>
+  </summary>
+
+  - watch：
+    - 是一个观察的动作，当需要在数据变化是执行异步或者开销比较大的操作，
+    - 也可以进行深度监听，监听对象的变化
+  
+  - computed：
+    - 是一个计算属性，类似于过滤器，对绑定到view的数据进行处理；有get 和 set 属性
+  
+  - 区别：
+    - computed 是**计算属性**，简化tempalte里面 {{数据}} **计算和处理 props 或者 $emit 的传值**，**具有缓存性**，页面重新渲染值不变化，计算属性会立即返回之前的计算结果，而不必再次执行函数；
+    - watch 是**观察动作**，**监听 props，$emit 或本组件的值执行异步操作**， **无缓存性**，页面渲染是值不变化也会执行
+
+</details>
+
+#### Watch 中的 deep:true
+<details>
+  <summary style="color: #3eaf7c;">
+    <span style="cursor:pointer;color:#3eaf7c;font-size:14px;">解析</span>
+  </summary>
+
+  - watch可以监听模型变量的变化。是一个对象，以键值对形式出现；值可以是函数，有可以是匿名函数；
+
+  - 值是包括选项的对象：选项包括有三个。
+    - handler: 是一个回调函数，**监听变化时应执行的函数**；
+
+    - deep：**是否深入监听**。deep 的意思就是深入观察，监听器会一层层的往下遍历，给对象的所有属性都加上或则个监听器；
+    
+    - immediate: 表示在 watch 中 **首次绑定的时候，是否执行handler**，值为true则表示在watch中声明的时候，就立即执行handler方法，值为false，则和一般使用watch一样，在数据发生变化的时候才执行handler。
+
+</details>
+
+
+#### v-show 和 v-if指令的共同点和不同点
+<details>
+  <summary style="color: #3eaf7c;">
+    <span style="cursor:pointer;color:#3eaf7c;font-size:14px;">解析</span>
+  </summary>
+
+  - v-if & v-show 用于隐藏和显示元素
+  - 区别在于
+    - v-show 是 css 的切换，修改 display:block|none；
+    - v-if 是把元素从dom中删除或者创建 （false 不渲染）
+  
+
+</details>
+
+#### v-if 和 v-for 一起使用的弊端以及解决办法
+<details>
+  <summary style="color: #3eaf7c;">
+    <span style="cursor:pointer;color:#3eaf7c;font-size:14px;">解析</span>
+  </summary>
+
+  - v-for 优先级比 v-if 高，导致美循环一次就会去 v-if 一次，而 v-if 是通过创建和销毁dom元素来控制元素显示与隐藏，所以会不停的去创建和销毁元素，造成页面卡顿，性能下降；
+  - 解决办法：在 v-for 的外层或内层包裹一个元素来使用 v-if
+
+</details>
+
+#### vue 中的事件修饰符主要有哪些？分别是什么作用
+<details>
+  <summary style="color: #3eaf7c;">
+    <span style="cursor:pointer;color:#3eaf7c;font-size:14px;">解析</span>
+  </summary>
+
+  修饰符 | 作用
+  |:--:|--|
+  .stop | 阻止事件冒泡
+  .native | 绑定原生事件
+  .once | 事件只执行一次
+  .self | 事件绑定在自身身上，相当于阻止事件冒泡
+  .prevent | 阻止默认事件
+  .caption | 用于事件捕获
+
+</details>
+
+#### vue 的生命周期
+<details>
+  <summary style="color: #3eaf7c;">
+    <span style="cursor:pointer;color:#3eaf7c;font-size:14px;">解析</span>
+  </summary>
+
+  - 总共分8个阶段: 创建前/后，载入前/后，更新前/后，销毁前/后
+  - **创建前/后**： 
+    - **beforeCreate** 阶段，vue 实例的挂载元素 $el 和数据对象 data 都为 understand，还未初始化。
+    - **created 阶段**，实例创建完成之后调用。实例已经完成 数据观测(dataobserver), 属性和方法运算， watch/event事件回调，还没有$el;
+  - **载入前/后**
+    - **beforeMount** 阶段：虚拟DOM已创建完成，在数据渲染前最后一次更改数据
+    - **mounted** 阶段：vue 实例挂载完成 data成功渲染
+  - **更新前/后**
+    - data 变化时  会触发 beforeUpdate 和 updated 方法，不常用 不推荐使用；
+  - **销毁前/后**
+    - **beforeDestory** 在vue实例销毁前触发
+    - **destroyed** 在实例销毁后触发
+
+</details>
+
+#### ajax 请求放在哪个生命周期中
+<details>
+  <summary style="color: #3eaf7c;">
+    <span style="cursor:pointer;color:#3eaf7c;font-size:14px;">解析</span>
+  </summary>
+
+  - 在 created 的时候，视图中的 dom 并没有渲染出来，所以此时如果直接去操作 dom 节点，无法找到相关的元素
+  - 在 mounted 中，由于此时 dom 已经渲染出来了，所有可以直接操作 dom 节点；
+  - 因为生命周期是同步执行，ajax 是异步执行，保证逻辑统一性，不被多次调用，一般情况下放在 mounted 中
+    - 服务端渲染不支持 mounted 方法，所以在服务端渲染的情况先统一放在 created 中
+
+</details>
+
+
+#### 组件通信
+<details>
+  <summary style="color: #3eaf7c;">
+    <span style="cursor:pointer;color:#3eaf7c;font-size:14px;">解析</span>
+  </summary>
+
+  - props 父组件向子组件，是一个单向的传递
+  - $emit 子组件向父组件，子组件使用 $emit() 触发自定义事件，父组件用 &on() 监听，类似观察者模式
+  - 中央事件总线 Bus, 在 vue 的原型上添加一个bus属性,之后创建的 vue 实例都具有 bus 这个属性，就可以通过 $bus 进行组件交互
+
+  > **父子通信** props和$emit基本可以满足， **兄弟组件** 可以用 vuex 或 bus，**跨级** 可以使用 bus 或 vuex 
+
+</details>
+
+#### vue 中父组件如何获取子组件的属性和方法
+<details>
+  <summary style="color: #3eaf7c;">
+    <span style="cursor:pointer;color:#3eaf7c;font-size:14px;">解析</span>
+  </summary>
+
+  - 通过在子组件上定义ref属性来获取子组件的属性和方法
+  ```js
+    this.$refs.child.属性名（方法名）
+  ```
+
+</details>
+
+#### vue-router是什么？有哪些组件？
+<details>
+  <summary style="color: #3eaf7c;">
+    <span style="cursor:pointer;color:#3eaf7c;font-size:14px;">解析</span>
+  </summary>
+
+  - Vue Router 是 Vue.js 官方的路由管理器。它和 Vue.js 的核心深度集成，让构建单页面应用变得易如反掌。
+    - router-link、router-view、keep-alive
+
+</details>
+  
+
+#### active-class 是哪个组件的属性？
+<details>
+  <summary style="color: #3eaf7c;">
+    <span style="cursor:pointer;color:#3eaf7c;font-size:14px;">解析</span>
+  </summary>
+
+  - active-class是router-link终端属性，用来做选中样式的切换，当router-link标签被点击时将会应用这个样式
+
+</details>
+
+
+#### vue-router 定义动态路由，获取传值
+<details>
+  <summary style="color: #3eaf7c;">
+    <span style="cursor:pointer;color:#3eaf7c;font-size:14px;">解析</span>
+  </summary>
+
+  - 动态路由的创建，主要是使用path属性过程中，使用动态路径参数，以冒号开头，如下：
+    - 访问details目录下的所有文件，如果details/a，details/b等，都会映射到Details组件上。
+    - 当匹配到/details下的路由时，参数值会被设置到this.$route.params下，所以通过这个属性可以获取动态参数
+  ```js
+    // 定义动态路由
+    {
+      path: '/details/:id'
+      name: 'Details'
+      components: Details
+    }
+    // 获取动态路由参数
+    console.log(this.$route.params.id)
+  ```
+
+</details>
+
+#### vue-router 传参方式 
+<details>
+  <summary style="color: #3eaf7c;">
+    <span style="cursor:pointer;color:#3eaf7c;font-size:14px;">解析</span>
+  </summary>
+
+  - Params：只能使用name，不能使用path; 参数不会显示在路径上; 浏览器强制刷新参数会被清空
+  ```js
+    // 传递参数
+    this.$router.push({
+      name: Home，
+      params: {
+        number: 1 ,
+        code: '999'
+      }
+    })
+    // 接收参数
+    const p = this.$route.params
+  ```
+  - Query: 参数会显示在路径上，刷新不会被清空; name 可以使用path路径
+  ```js
+    // 传递参数
+    this.$router.push({
+      name: Home，
+      query: {
+      number: 1 ,
+      code: '999'
+    }
+                      })
+    // 接收参数
+    const q = this.$route.query
+  ```
+
+</details>
+
+#### route 、router 、routes的区别
+<details>
+  <summary style="color: #3eaf7c;">
+    <span style="cursor:pointer;color:#3eaf7c;font-size:14px;">解析</span>
+  </summary>
+
+  - router 是一个全局路由对象，包含了路由跳转的方法、钩子函数等  
+
+  - route 是一个路由信息对象，每一个路由都会有一个route对象，是一个局部对象，包含path,params,hash,query,fullPath,matched,name等路由信息参数。
+
+  - routes 创建 vue-router 路由实例的配置项，用来配置多个 route 路由对象
+
+</details>
+
+#### vue-router 路由守卫
+<details>
+  <summary style="color: #3eaf7c;">
+    <span style="cursor:pointer;color:#3eaf7c;font-size:14px;">解析</span>
+  </summary>
+
+  - 完整的导航解析流程
+  1. 导航被触发
+  2. 在失活的组件里调用离开守卫
+  3. 调用全局的 beforeEach 守卫
+  4. 在重用的组件里调用 beforeRouteUpdate 守卫
+  5. 在路由配置里调用 beforeEnter
+  6. 解析异步路由组件
+  7. 在被激活的组件里调用 beforeRouteEnted
+  8. 调用全局的 beforeResolve 守卫
+  9. 导航被确认
+  10. 调用全局的 afterEach 钩子
+  11. 触发 DOM 更新
+  12. 用创建好的实例调用 beforeRouteEnter 守卫中传给 next 的回调函数
+
+</details>
+
+#### vue-router有哪几种导航钩子（ 导航守卫 ）
+<details>
+  <summary style="color: #3eaf7c;">
+    <span style="cursor:pointer;color:#3eaf7c;font-size:14px;">解析</span>
+  </summary>
+
+  1. 全局守卫 router.beforeEach
+    - to:Route,代表要进入的目标，它是一个路由对象。
+    - from:Route,代表当前正要离开的路由，也是一个路由对象
+    - next():进入管道中的下一个钩子，必须调用，否则钩子函数无法resolved
+  2. 全局解析守卫 router.beforeResolve
+  3. 全局后置钩子 router.afterEach
+  4. 路由独享的守卫 beforeEnter
+  5. 组件内的守卫 beforeRouteEnter、beforeRouteUpdate(2.2 新增)、beforeRouteLeave
+  
+  vue-router 提供的导航守卫主要用来:通过跳转或取消的方式守卫导航   
+
+  注意：参数或查询的改变并不会触发进入/离开的导航守卫。 你可以通过观察 $route 对象 来应对这些变化，或使用 beforeRouteUpdate的组件内守卫。
+  
+</details>
+
+
+#### vue-router响应路由参数的变化
+<details>
+  <summary style="color: #3eaf7c;">
+    <span style="cursor:pointer;color:#3eaf7c;font-size:14px;">解析</span>
+  </summary>
+
+  1. 用watch 检测
+  ```js
+    // 监听当前路由发生变化的时候执行
+    watch: {
+      $route(to, from){
+        console.log(to.path)
+        // 对路由变化做出响应
+      }
+    }
+  ```
+
+  2. 组件内导航钩子函数
+  ```js
+    beforeRouteUpdate(to, from, next){
+      // to do somethings
+    }
+  ```
+
+</details>
+
+#### vue-router的两种模式
+<details>
+  <summary style="color: #3eaf7c;">
+    <span style="cursor:pointer;color:#3eaf7c;font-size:14px;">解析</span>
+  </summary>
+
+  1. hash
+    - 原理是onhashchage事件，可以在window对象上监听这个事件
+  ```js
+    window.onhashchange = function(event){
+      console.log(event.oldURL, event.newURL)
+      let hash = location.hash.slice(1)
+    }
+  ```
+
+  2. history
+    - 利用了HTML5 History Interface 中新增的pushState()和replaceState()方法。
+    - 需要后台配置支持。如果刷新时，服务器没有响应响应的资源，会刷出404，
+
+</details>
+
+####  vue-router实现路由懒加载（动态加载路由）
+<details>
+  <summary style="color: #3eaf7c;">
+    <span style="cursor:pointer;color:#3eaf7c;font-size:14px;">解析</span>
+  </summary>
+
+  1. 把不同路由对应的组件分割成不同的代码块，然后当**路由被访问时才加载对应的组件**即为路由的懒加载，可以加快项目的加载速度，提高效率
+  ```js
+    const router = new VueRouter({
+      routes: [
+        {
+          path: '/home',
+          name: 'Home'，
+          component:() = import('../views/xxxx')
+        }
+      ]
+    })
+  ```
+  
+</details>
+
+#### vuex 是什么？怎么使用？哪种功能场景使用它
+<details>
+  <summary style="color: #3eaf7c;">
+    <span style="cursor:pointer;color:#3eaf7c;font-size:14px;">解析</span>
+  </summary>
+
+  - 
+
+</details>
+
+#### 不用 Vuex 会带来什么问题
+<details>
+  <summary style="color: #3eaf7c;">
+    <span style="cursor:pointer;color:#3eaf7c;font-size:14px;">解析</span>
+  </summary>
+
+  - 
+
+</details>
+
+#### vuex 属性
+<details>
+  <summary style="color: #3eaf7c;">
+    <span style="cursor:pointer;color:#3eaf7c;font-size:14px;">解析</span>
+  </summary>
+
+  - 
+
+</details>
+
+#### 介绍下什么是 keep-alive
+<details>
+  <summary style="color: #3eaf7c;">
+    <span style="cursor:pointer;color:#3eaf7c;font-size:14px;">解析</span>
+  </summary>
+
+  - 
+
+</details>
+
+
+
+[2020前端最新面试题（vue篇）](https://blog.csdn.net/weixin_45325238/article/details/104968195)
+
+[2020年3月份最新vue面试题汇总一](https://blog.csdn.net/qq_41646249/article/details/104644647)   
+
+[2020年3月份最新vue面试题汇总二](https://blog.csdn.net/qq_41646249/article/details/104644712)  
