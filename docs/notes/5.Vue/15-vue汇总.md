@@ -23,26 +23,7 @@
 
 </details>
 
-#### react和vue有哪些不同，说说你对这两个框架的看法
-<details>
-  <summary style="color: #3eaf7c;">
-    <span style="cursor:pointer;color:#3eaf7c;font-size:14px;">解析</span>
-  </summary>
 
-  - 相同点
-    - 都支持服务器端渲染
-    - 都有Virtual DOM,组件化开发,通过props参数进行父子组件数据的传递,都实现webComponent规范
-    - 数据驱动视图
-    - 都有支持native的方案,React的React native,Vue的weex
-
-  - 不同点
-    - React严格上只针对MVC的view层,Vue则是MVVM模式
-    - virtual DOM不一样,vue会跟踪每一个组件的依赖关系,不需要重新渲染整个组件树.而对于React而言,每当应用的状态被改变时,全部组件都会重新渲染,所以react中会需要shouldComponentUpdate这个生命周期函数方法来进行控制
-    - 组件写法不一样, React推荐的做法是 JSX + inline style, 也就是把HTML和CSS全都写进JavaScript了,即'all in js'; Vue推荐的做法是webpack+vue-loader的单文件组件格式,即html,css,jd写在同一个文件;
-    - 数据绑定: vue实现了数据的双向绑定, react数据流动是单向的
-    - state对象在react应用中不可变的,需要使用setState方法更新状态;在vue中,state对象不是必须的,数据由data属性在vue对象中管理
-
-</details>
 
 #### vue 两个核心
 <details>
@@ -61,18 +42,21 @@
     <span style="cursor:pointer;color:#3eaf7c;font-size:14px;">解析</span>
   </summary>
 
-
+  - vue 使用的 **m-v-vm** 模式，通过 **modelView** 作为中间层，进行双向数据的 绑定 与 变化；
+  1. 通过建立虚拟 dom 树 **document.createDocumentFragment()** 方法创建虚拟 dom 树
+  2. 一旦被监测的数据发生变化， 会通过 **Object.defineProperty()** 定义的数据拦截，截取到数据的变化
+  3. 截取到的数据变化，通过订阅--发布模式，触发 Watcher (观察者)，从而改变虚拟 dom 中的具体数据
+  4. 最后通过更新虚拟dom元素的值，改变最后渲染的 dom 树，完成双向绑定
 
 </details>
 
-#### vue 的双向绑定的原理
+#### vue MVVM/双向绑定 的原理
 <details>
   <summary style="color: #3eaf7c;">
     <span style="cursor:pointer;color:#3eaf7c;font-size:14px;">解析</span>
   </summary>
 
-  - 通过 Object.defineProperty() 来劫持各个属性的 setter / getter, 在数据变动时发布消息给订阅者
-  - 触发相应的监听回调，这也是为什么 vue 不支持 IE8 的原因（IE8 不支持此 api， 且无法通过 polyfill 实现）
+  - 采用 **数据劫持** 结合 **发布者－订阅者模式** 的方式，通过 **Object.defineProperty()** 来劫持各个属性的 setter，getter,在数据变动时发布消息给订阅者，触发响应的监听回调。
 
 </details>
 
@@ -92,7 +76,8 @@
     <span style="cursor:pointer;color:#3eaf7c;font-size:14px;">解析</span>
   </summary>
 
-
+  - 修改对象属性后页面未重新渲染可以使用 this.$set(对象名称, '属性名', '属性值')
+  - 使用this.$forceUpdate()方法可重新渲染页面
 
 </details>
 
@@ -102,8 +87,8 @@
     <span style="cursor:pointer;color:#3eaf7c;font-size:14px;">解析</span>
   </summary>
 
-  - 在下次 DOM 更新循环结束之后执行延迟回调。在修改数据之后，立即使用这个回调函数，获取更新后的 DOM。
-
+  - $nextTick 会在DOM渲染之后被触发，以获得最新Dom
+  - 页面渲染时会将 data 的修改做整合，多次 data 修改只会渲染一次
 
 </details>
 
@@ -144,6 +129,27 @@
 
 </details>
 
+#### v-html 会导致哪些问题
+<details>
+  <summary style="color: #3eaf7c;">
+    <span style="cursor:pointer;color:#3eaf7c;font-size:14px;">解析</span>
+  </summary>
+
+ - 会有xss分险，会覆盖子元素
+ - v-html 更新的是元素的 innerHTML。 内容按照普通 HTML 插入，不会做为vue 模板进行编译
+ - 在单文件组件里，scoped 的样式不会应用在v-html 内部，因为那部分 HTML 没有被 vue 的模板编辑器处理。如果你希望针对 v-html 的内容设置带作用域的 css， 你可以替换为 css Modules 或用过一个额外的全局
+
+</details>
+
+#### v-for中key
+<details>
+  <summary style="color: #3eaf7c;">
+    <span style="cursor:pointer;color:#3eaf7c;font-size:14px;">解析</span>
+  </summary>
+
+  - key 属性是唯一的标识
+ 
+</details>
 
 #### v-show 和 v-if指令的共同点和不同点
 <details>
@@ -156,7 +162,6 @@
     - v-show 是 css 的切换，修改 display:block|none；
     - v-if 是把元素从dom中删除或者创建 （false 不渲染）
   
-
 </details>
 
 #### v-if 和 v-for 一起使用的弊端以及解决办法
@@ -165,7 +170,7 @@
     <span style="cursor:pointer;color:#3eaf7c;font-size:14px;">解析</span>
   </summary>
 
-  - v-for 优先级比 v-if 高，导致美循环一次就会去 v-if 一次，而 v-if 是通过创建和销毁dom元素来控制元素显示与隐藏，所以会不停的去创建和销毁元素，造成页面卡顿，性能下降；
+  - v-for 优先级比 v-if 高，导致每循环一次就会去 v-if 一次，而 v-if 是通过创建和销毁dom元素来控制元素显示与隐藏，所以会不停的去创建和销毁元素，造成页面卡顿，性能下降；
   - 解决办法：在 v-for 的外层或内层包裹一个元素来使用 v-if
 
 </details>
@@ -194,17 +199,28 @@
   </summary>
 
   - 总共分8个阶段: 创建前/后，载入前/后，更新前/后，销毁前/后
-  - **创建前/后**： 
-    - **beforeCreate** 阶段，vue 实例的挂载元素 $el 和数据对象 data 都为 understand，还未初始化。
-    - **created 阶段**，实例创建完成之后调用。实例已经完成 数据观测(dataobserver), 属性和方法运算， watch/event事件回调，还没有$el;
-  - **载入前/后**
-    - **beforeMount** 阶段：虚拟DOM已创建完成，在数据渲染前最后一次更改数据
-    - **mounted** 阶段：vue 实例挂载完成 data成功渲染
-  - **更新前/后**
-    - data 变化时  会触发 beforeUpdate 和 updated 方法，不常用 不推荐使用；
-  - **销毁前/后**
-    - **beforeDestory** 在vue实例销毁前触发
-    - **destroyed** 在实例销毁后触发
+    - **创建前/后**： 
+      - **beforeCreate** 阶段，vue 实例的挂载元素 $el 和数据对象 data 都为 understand，还未初始化。
+      - **created 阶段**，实例创建完成之后调用。实例已经完成 数据观测(dataobserver), 属性和方法运算， watch/event事件回调，还没有$el;
+    - **载入前/后**
+      - **beforeMount** 阶段：虚拟DOM已创建完成，在数据渲染前最后一次更改数据
+      - **mounted** 阶段：vue 实例挂载完成 data成功渲染
+    - **更新前/后**
+      - data 变化时  会触发 beforeUpdate 和 updated 方法，不常用 不推荐使用；
+    - **销毁前/后**
+      - **beforeDestory** 在vue实例销毁前触发
+      - **destroyed** 在实例销毁后触发
+      
+  - 父子组件生命周期
+    - 加载渲染过程：  
+      父beforeCreate->父created->父beforeMount->子beforeCreate->子created->子beforeMount->子mounted->父mounted
+    - 组件更新过程：   
+      父beforeUpdate->子beforeUpdate->子updated->父updated
+    - 销毁过程：  
+      父beforeDestroy->子beforeDestroy->子destroyed->父destroyed
+
+
+  ![生命周期图示](https://cn.vuejs.org/images/lifecycle.png "生命周期图示")
 
 </details>
 
@@ -222,7 +238,7 @@
 </details>
 
 
-#### 组件通信
+#### vue 组件通信
 <details>
   <summary style="color: #3eaf7c;">
     <span style="cursor:pointer;color:#3eaf7c;font-size:14px;">解析</span>
@@ -231,6 +247,7 @@
   - props 父组件向子组件，是一个单向的传递
   - $emit 子组件向父组件，子组件使用 $emit() 触发自定义事件，父组件用 &on() 监听，类似观察者模式
   - 中央事件总线 Bus, 在 vue 的原型上添加一个bus属性,之后创建的 vue 实例都具有 bus 这个属性，就可以通过 $bus 进行组件交互
+  - 插槽
 
   > **父子通信** props和$emit基本可以满足， **兄弟组件** 可以用 vuex 或 bus，**跨级** 可以使用 bus 或 vuex 
 
@@ -246,6 +263,23 @@
   ```js
     this.$refs.child.属性名（方法名）
   ```
+
+</details>
+
+#### 多个组件有相同逻辑如何抽离（mixin）
+<details>
+  <summary style="color: #3eaf7c;">
+    <span style="cursor:pointer;color:#3eaf7c;font-size:14px;">解析</span>
+  </summary>
+
+  - Mixins是一种分发Vue组件中可复用功能的非常灵活的一种方式。
+    - mixin的数据对象和组件的数据发生冲突时以组件数据优先。
+  
+  - mixin问题：
+    - 变量来源不明，不利代码阅读
+    - 多mixin 可能造成命名冲突
+    - mixin 和组件可能出现多对多的关系，复杂程度高
+  
 
 </details>
 
@@ -294,38 +328,43 @@
 
 </details>
 
-#### vue-router 传参方式 
+#### vue-router 路由的跳转方式，传参方式 
 <details>
   <summary style="color: #3eaf7c;">
     <span style="cursor:pointer;color:#3eaf7c;font-size:14px;">解析</span>
   </summary>
 
-  - Params：只能使用name，不能使用path; 参数不会显示在路径上; 浏览器强制刷新参数会被清空
-  ```js
-    // 传递参数
-    this.$router.push({
-      name: Home，
-      params: {
+  - 两种跳转方式：
+    - router-link to
+    - 编程式导航 router.push()
+
+  - 两种传参方式
+    - Params：只能使用name，不能使用path; 参数不会显示在路径上; 浏览器强制刷新参数会被清空
+    ```js
+      // 传递参数
+      this.$router.push({
+        name: Home，
+        params: {
+          number: 1 ,
+          code: '999'
+        }
+      })
+      // 接收参数
+      const p = this.$route.params
+    ```
+    - Query: 参数会显示在路径上，刷新不会被清空; name 可以使用path路径
+    ```js
+      // 传递参数
+      this.$router.push({
+        name: Home，
+        query: {
         number: 1 ,
         code: '999'
       }
-    })
-    // 接收参数
-    const p = this.$route.params
-  ```
-  - Query: 参数会显示在路径上，刷新不会被清空; name 可以使用path路径
-  ```js
-    // 传递参数
-    this.$router.push({
-      name: Home，
-      query: {
-      number: 1 ,
-      code: '999'
-    }
-                      })
-    // 接收参数
-    const q = this.$route.query
-  ```
+                        })
+      // 接收参数
+      const q = this.$route.query
+    ```
 
 </details>
 
@@ -455,45 +494,81 @@
   
 </details>
 
-#### vuex 是什么？怎么使用？哪种功能场景使用它
+#### 指令 keep-alive
 <details>
   <summary style="color: #3eaf7c;">
     <span style="cursor:pointer;color:#3eaf7c;font-size:14px;">解析</span>
   </summary>
 
-  - 
+  - 缓存组件
+  - 频繁切换，不需要重复渲染组件
 
 </details>
 
-#### 不用 Vuex 会带来什么问题
+#### vuex是什么？怎么使用？哪种功能场景使用它？
 <details>
   <summary style="color: #3eaf7c;">
     <span style="cursor:pointer;color:#3eaf7c;font-size:14px;">解析</span>
   </summary>
 
-  - 
+  - vuex 是一个专为 vue.js 应用程序开发的**状态管理模式**；相当于一个仓库，仓库里放了很多对象，任何组件都可以存取仓库中的数据；
+
+  - vuex 有五个属性，state，getters，mutations，actions，modules；
+    - state: 数据存放地，类似一个仓库  
+      - 当 mutation 修改了state的数据的时候，他会动态的去修改所有的调用这个变量的所有组件里面的值
+    
+    - getters: 实时监听state值的变化，获取数据
+
+    - mutations: 提交更改数据的方法，必须是同步函数
+      - 
+    - actions: 可以包含任意异步操作，通过提交 mutation 间接更变状态。
+
+    - modules 模块化vuex，将 store 分割成模块，每个模块都具有state、mutation、action、getter、甚至是嵌套子模块。
+
+  - 使用vuex优势：
+    - **多层嵌套的组件、兄弟组件间的状态会更好管理维护**  
+    - **数据集中处理更有利程序的稳定和维护**  
+    - 缓存一些当前要使用请求远程或者本地的数据集
+
+  - 使用场景： 对于多个组件共享状态时，跨组件共享数据，使用vuex 是不错的选择
 
 </details>
 
-#### vuex 属性
+#### action 和 mutation 区别
 <details>
   <summary style="color: #3eaf7c;">
     <span style="cursor:pointer;color:#3eaf7c;font-size:14px;">解析</span>
   </summary>
 
-  - 
+  - **actions** 最终提交的是 **mutation**,间接改变状态；
+  - 因为在vue中，只有 **mutation** 才能正真改变 VUEX stroe 中的 state；
+  - actions 最大的作用就是可以包含任意的异步操作，如果有异步操作那么就用 action 来提交 mutation
 
 </details>
 
-#### 介绍下什么是 keep-alive
+#### vue 3.0 有哪些改进
+
+#### react和vue有哪些不同，说说你对这两个框架的看法
 <details>
   <summary style="color: #3eaf7c;">
     <span style="cursor:pointer;color:#3eaf7c;font-size:14px;">解析</span>
   </summary>
 
-  - 
+  - 相同点
+    - 都支持服务器端渲染
+    - 都有Virtual DOM,组件化开发,通过props参数进行父子组件数据的传递,都实现webComponent规范
+    - 数据驱动视图
+    - 都有支持native的方案,React的React native,Vue的weex
+
+  - 不同点
+    - React严格上只针对MVC的view层,Vue则是MVVM模式
+    - virtual DOM不一样,vue会跟踪每一个组件的依赖关系,不需要重新渲染整个组件树.而对于React而言,每当应用的状态被改变时,全部组件都会重新渲染,所以react中会需要shouldComponentUpdate这个生命周期函数方法来进行控制
+    - 组件写法不一样, React推荐的做法是 JSX + inline style, 也就是把HTML和CSS全都写进JavaScript了,即'all in js'; Vue推荐的做法是webpack+vue-loader的单文件组件格式,即html,css,jd写在同一个文件;
+    - 数据绑定: vue实现了数据的双向绑定, react数据流动是单向的
+    - state对象在react应用中不可变的,需要使用setState方法更新状态;在vue中,state对象不是必须的,数据由data属性在vue对象中管理
 
 </details>
+
 
 
 

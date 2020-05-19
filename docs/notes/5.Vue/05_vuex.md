@@ -57,7 +57,7 @@ this.$store.dispatch('hideFooter')
 this.$store.dispatch('getNewNum', '要变化的参数')
 ```
 
-***1.5 modeles***
+***1.5 modules***
 
 - 项目特别复杂时，可以让每一个模块拥有自己的state，mutation，action，getters，使得结构非常清晰，方便管理
 - mapState, mapActions, mapGetters的使用
