@@ -518,9 +518,9 @@
       - 当 mutation 修改了state的数据的时候，他会动态的去修改所有的调用这个变量的所有组件里面的值
     
     - getters: 实时监听state值的变化，获取数据
-
+    
     - mutations: 提交更改数据的方法，必须是同步函数
-      - 
+
     - actions: 可以包含任意异步操作，通过提交 mutation 间接更变状态。
 
     - modules 模块化vuex，将 store 分割成模块，每个模块都具有state、mutation、action、getter、甚至是嵌套子模块。
