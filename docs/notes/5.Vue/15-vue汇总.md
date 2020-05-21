@@ -1,4 +1,8 @@
 # vue 总结
+  [2020 Vue经典面试题](https://blog.csdn.net/MingL520/article/details/106014105)  
+  - vue 两个核心：
+    - 数据驱动： ViewModel，保证数据和视图的一致性 
+    - 组件化
 
 #### mvvm mvc是什么区别 原理
 <details>
@@ -7,32 +11,23 @@
   </summary>
 
   - MVC（Model-View-Controller）
-    - 用户操作会请求服务端路由，路由会调用对应的控制器来处理业务，控制器将处理的结果返回给前端，前端根据接受数据渲染页面；
-
+    - 视图（view）、模型（Model）、控制器（controller）
+    - View 传送指令到 Controller,Controller 完成业务逻辑后，要求 Model 改变状态,Model 将新的数据发送到 View，用户得到反馈
+    - 所有通信都是单向的。
+  ![mvc](http://www.ruanyifeng.com/blogimg/asset/2015/bg2015020105.png "mvc")   
+  
   - MVVM（Model-View-ViewModel）
-    - 是将 **数据模型数据双向绑定** 的思想作为核心，因此在View和Model之间没有联系，通过ViewModel进行交互，
-    - 而且 Model 和 ViewModel 之间的交互是双向的，因此视图的数据的变化会同时修改数据源，而数据源数据的变化也会立即反应view。
+    - model 代表数据层； view 代表视图层； ViewModel 主要负责同步 model 和 view 的对象，保证视图和数据的一致性,也就实现双向数据绑定
+  ![mvvm](http://www.ruanyifeng.com/blogimg/asset/2015/bg2015020110.png "mvvm")  
 
   - mvc和mvvm其实区别并不大。都是一种设计思想。
+    - mvc 是一个单向数据通信； mvvm是一个双向数据绑定模式
     - 主要就是mvc中Controller演变成mvvm中的viewModel。
     - mvvm主要解决了mvc中大量的DOM 操作使页面渲染性能降低，加载速度变慢，影响用户体验。
 
   - 区别：vue数据驱动，通过数据来显示视图层而不是节点操作。
 
   - 场景：数据操作比较多的场景，更加便捷
-
-</details>
-
-
-
-#### vue 两个核心
-<details>
-  <summary style="color: #3eaf7c;">
-    <span style="cursor:pointer;color:#3eaf7c;font-size:14px;">解析</span>
-  </summary>
-
-  - 数据驱动： ViewModel，保证数据和视图的一致性
-  - 组件化
 
 </details>
 
@@ -48,15 +43,11 @@
   3. 截取到的数据变化，通过订阅--发布模式，触发 Watcher (观察者)，从而改变虚拟 dom 中的具体数据
   4. 最后通过更新虚拟dom元素的值，改变最后渲染的 dom 树，完成双向绑定
 
-</details>
-
-#### vue MVVM/双向绑定 的原理
-<details>
-  <summary style="color: #3eaf7c;">
-    <span style="cursor:pointer;color:#3eaf7c;font-size:14px;">解析</span>
-  </summary>
-
-  - 采用 **数据劫持** 结合 **发布者－订阅者模式** 的方式，通过 **Object.defineProperty()** 来劫持各个属性的 setter，getter,在数据变动时发布消息给订阅者，触发响应的监听回调。
+  mvc 数据视图控制器 视图发送指令 ->控制逻辑，修改数据 -> 数据发送给视图 单向通信  
+  mvvm 数据视图 viewmodel 负责同步数据视图对象 保证一致 实现的是一个双向的通信  
+  主要是通过 数据劫持和发布订阅模式 实现的数据视图一致  
+  核心方法是用ES5 的 object.defineProperty() 劫持各个属性的 set get方法
+  当某个数据有变化时，发布消息给订阅者，然后触发相应的监听回调 
 
 </details>
 
@@ -70,7 +61,7 @@
 
 </details>
 
-#### vue 解决页面不重新渲染问题
+#### vue 解决页面不重新渲染问题(this.$set)
 <details>
   <summary style="color: #3eaf7c;">
     <span style="cursor:pointer;color:#3eaf7c;font-size:14px;">解析</span>
@@ -81,50 +72,46 @@
 
 </details>
 
-#### nextTick 实现原理
+#### nextTick 作用、实现原理
 <details>
   <summary style="color: #3eaf7c;">
     <span style="cursor:pointer;color:#3eaf7c;font-size:14px;">解析</span>
   </summary>
 
   - $nextTick 会在DOM渲染之后被触发，以获得最新Dom
-  - 页面渲染时会将 data 的修改做整合，多次 data 修改只会渲染一次
+  - 页面渲染时会将 data 的修改做整合，多次 data 修改只会渲染一次 
+  - [Vue.nextTick 的原理和用途](https://segmentfault.com/a/1190000012861862)
 
 </details>
 
 
-#### computed 和 watch的区别
+#### computed
 <details>
   <summary style="color: #3eaf7c;">
     <span style="cursor:pointer;color:#3eaf7c;font-size:14px;">解析</span>
   </summary>
 
-  - watch：
-    - 是一个观察的动作，当需要在数据变化是执行异步或者开销比较大的操作，
-    - 也可以进行深度监听，监听对象的变化
-  
-  - computed：
-    - 是一个计算属性，类似于过滤器，对绑定到view的数据进行处理；有get 和 set 属性
-  
-  - 区别：
-    - computed 是**计算属性**，简化tempalte里面 {{数据}} **计算和处理 props 或者 $emit 的传值**，**具有缓存性**，页面重新渲染值不变化，计算属性会立即返回之前的计算结果，而不必再次执行函数；
-    - watch 是**观察动作**，**监听 props，$emit 或本组件的值执行异步操作**， **无缓存性**，页面渲染是值不变化也会执行
+  - 是一个计算属性，类似于过滤器，**对绑定到view的数据进行处理**；可用于简化tempalte里面{{}}计算，处理 props 或者 $emit 的传值；
+  - **有get 和 set 属性，不需要在data里声明**
+  - **具有缓存性**；如果 页面重新渲染 值不变化，计算属性会立即返回之前的计算结果，而不必再次执行函数；
 
 </details>
 
-#### Watch 中的 deep:true
+#### Watch
 <details>
   <summary style="color: #3eaf7c;">
     <span style="cursor:pointer;color:#3eaf7c;font-size:14px;">解析</span>
   </summary>
 
-  - watch可以监听模型变量的变化。是一个对象，以键值对形式出现；值可以是函数，有可以是匿名函数；
+  
+  - Watch 是一个**观察的动作**，可以监听模型变量的变化。可用于监听 props，$emit，vuex 或 本组件的值 执行异步操作
+  - Watch 是一个**对象**，以键值对形式出现；值可以是函数，也可以是匿名函数； 
+  - 可以进行 **深度监听**, 
+  - **无缓存性**，页面重新渲染时值不变化也会执行
 
   - 值是包括选项的对象：选项包括有三个。
-    - handler: 是一个回调函数，**监听变化时应执行的函数**；
-
+    - handler: 是一个**回调函数，监听变化时应执行的函数**；
     - deep：**是否深入监听**。deep 的意思就是深入观察，监听器会一层层的往下遍历，给对象的所有属性都加上或则个监听器；
-    
     - immediate: 表示在 watch 中 **首次绑定的时候，是否执行handler**，值为true则表示在watch中声明的时候，就立即执行handler方法，值为false，则和一般使用watch一样，在数据发生变化的时候才执行handler。
 
 </details>
@@ -141,13 +128,16 @@
 
 </details>
 
-#### v-for中key
+#### v-for key的作用
 <details>
   <summary style="color: #3eaf7c;">
     <span style="cursor:pointer;color:#3eaf7c;font-size:14px;">解析</span>
   </summary>
 
-  - key 属性是唯一的标识
+  - 当用v-for 更新一渲染过的元素列表时， 默认用 "就地复用" 策略。
+    - 如果数据项的顺序被改变，vue将不是移动 DOM 元素来匹配数据项的改变，而是简单复用此处每个元素，并确保它在特定索引下显示已被渲染过的每一个元素
+  - 使用key来给每个节点做一个唯一标识，更高效的更新虚拟DOM
+  - [Vue2.0 v-for 中 :key 到底有什么用？](https://www.cnblogs.com/zhumingzhenhao/p/7688336.html)
  
 </details>
 
@@ -335,8 +325,8 @@
   </summary>
 
   - 两种跳转方式：
-    - router-link to
-    - 编程式导航 router.push()
+    - 声明式导航：router-link to
+    - 编程式导航： router.push()
 
   - 两种传参方式
     - Params：只能使用name，不能使用path; 参数不会显示在路径上; 浏览器强制刷新参数会被清空
@@ -458,18 +448,15 @@
     <span style="cursor:pointer;color:#3eaf7c;font-size:14px;">解析</span>
   </summary>
 
-  1. hash
-    - 原理是onhashchage事件，可以在window对象上监听这个事件
-  ```js
-    window.onhashchange = function(event){
-      console.log(event.oldURL, event.newURL)
-      let hash = location.hash.slice(1)
-    }
-  ```
+  - 前端路由的核心，就在于——— 改变视图的同时不会向后端发出请求。
+  - **hash**
+    - 址栏 URL 中带 **#** 符号
+    - 特点：hash 虽然出现 URL 中，但不会被包含在 HTTP 请求中，对后端完全没有影响，因此改变 hash 不会重新加载页面。
 
-  2. history
-    - 利用了HTML5 History Interface 中新增的pushState()和replaceState()方法。
-    - 需要后台配置支持。如果刷新时，服务器没有响应响应的资源，会刷出404，
+  - **history**
+    - 利用了HTML5 History Interface 中新增的 pushState() 和 replaceState() 方法。（需要特定浏览器支持）
+    - 需要后台配置支持。如果刷新时，服务器没有响应响应的资源，会刷出404;
+    - history模式下，前端的url必须和实际向后端发起请求的url 一致，如http://www.abc.com/book/id 。如果后端缺少对/book/id 的路由处理，将返回404错误。 
 
 </details>
 
@@ -500,8 +487,13 @@
     <span style="cursor:pointer;color:#3eaf7c;font-size:14px;">解析</span>
   </summary>
 
-  - 缓存组件
+  - 缓存组件；就是可以把切换出去的组件保留在内存中，可以保留它的状态或避免重新渲染。
   - 频繁切换，不需要重复渲染组件
+
+  - keep-alive的生命周期：
+    - activated： 页面第一次进入的时候，钩子触发的顺序是created->mounted->activated
+    - deactivated:  页面退出的时候会触发deactivated，当再次前进或者后退的时候只触发activated
+
 
 </details>
 
@@ -544,6 +536,55 @@
   - 因为在vue中，只有 **mutation** 才能正真改变 VUEX stroe 中的 state；
   - actions 最大的作用就是可以包含任意的异步操作，如果有异步操作那么就用 action 来提交 mutation
 
+</details>
+
+#### axios
+<details>
+  <summary style="color: #3eaf7c;">
+    <span style="cursor:pointer;color:#3eaf7c;font-size:14px;">解析</span>
+  </summary>
+
+  - **概念**：
+    - axios 是一个基于 promise 的 HTTP 库，可以用在浏览器和node中；
+  
+  - **特点**： 
+    - 是一个基于 promise 的 HTTP 库，支持 promise 所有的 api
+    - 支持请求／响应拦截器
+    - 可以转换请求数据和响应数据，并对响应内容自动转换成 JSON 类型数据
+    - 安全性高，客户端支持 XSRF
+
+  - **有两个拦截器**
+    - request 请求拦截器， 在请求发送前进行一些操作
+    - response 响应拦截器， 在接收到响应后进行一些操作
+
+  - **常用方法**：
+    - get post put delete 
+
+  - axios**相关配置属性**
+    - **url** 用于请求服务器 URL
+    - **method** 请求方式
+    - **baseURL** 自动加在url前
+    - **transformRequest** 允许在向服务器发送前，修改请求数据，只能用在'PUT','POST'和'PATCH'这几个请求方法
+    - **headers** 自定义请求头
+    - **params** URL参数
+    - **auth** 凭据
+
+  - 优缺点：
+    1. ***ajax：***
+      - 本身是针对MVC编程，不符合前端MVVM的浪潮
+      - 基于原生XHR开发，XHR本身的架构不清晰，已经有了fetch的替代方案，jquery整个项目太大，单纯使用ajax却要引入整个jquery非常不合理（采取个性化打包方案又不能享受cdn服务）
+      - ajax不支持浏览器的back按钮
+      - 安全问题ajax暴露了与服务器交互的细节
+      - 对搜索引擎的支持比较弱
+      - 破坏程序的异常机制
+      - 不容易调试
+
+    2. ***axios：***
+      - 从node.js创建http请求
+      - 支持Promise API
+      - 客户端防止CSRF（网站恶意利用）
+      - 提供了一些并发请求的接口
+      
 </details>
 
 #### vue 3.0 有哪些改进
