@@ -1,5 +1,7 @@
 # vue 总结
-  [2020 Vue经典面试题](https://blog.csdn.net/MingL520/article/details/106014105)  
+  [2020 Vue经典面试题](https://blog.csdn.net/MingL520/article/details/106014105)    
+  [Vue常见面试题总结 必看](https://zhuanlan.zhihu.com/p/97950650)
+  [2020年，vue面试遇到的问题](https://zhuanlan.zhihu.com/p/103763164)
   - vue 两个核心：
     - 数据驱动： ViewModel，保证数据和视图的一致性 
     - 组件化
@@ -51,15 +53,7 @@
 
 </details>
 
-#### Vue 异步渲染
-<details>
-  <summary style="color: #3eaf7c;">
-    <span style="cursor:pointer;color:#3eaf7c;font-size:14px;">解析</span>
-  </summary>
 
-
-
-</details>
 
 #### vue 解决页面不重新渲染问题(this.$set)
 <details>
@@ -234,12 +228,26 @@
     <span style="cursor:pointer;color:#3eaf7c;font-size:14px;">解析</span>
   </summary>
 
-  - props 父组件向子组件，是一个单向的传递
-  - $emit 子组件向父组件，子组件使用 $emit() 触发自定义事件，父组件用 &on() 监听，类似观察者模式
-  - 中央事件总线 Bus, 在 vue 的原型上添加一个bus属性,之后创建的 vue 实例都具有 bus 这个属性，就可以通过 $bus 进行组件交互
+  - **$children**：用来访问子组件实例，是一个数组，可以用foreach分别得到所需要的的数据，但是无法确定子组件的顺序，也不是响应式的。
+  - **$refs**: 定义一个ref，这样就可以通过this.$refs获取所需要的的数据
+  - **$parent**: 访问父组件实例，通常父组件都是唯一确定的，跟$children类似
+  - **props** 父组件向子组件，是一个单向的传递
+  - **$emit** 子组件向父组件，子组件使用 $emit() 触发自定义事件，父组件用 &on() 监听，类似观察者模式
+  - **中央事件总线Bus** , 在 vue 的原型上添加一个bus属性,之后创建的 vue 实例都具有 bus 这个属性，就可以通过 $bus 进行组件交互
   - 插槽
 
   > **父子通信** props和$emit基本可以满足， **兄弟组件** 可以用 vuex 或 bus，**跨级** 可以使用 bus 或 vuex 
+
+  ```js
+    // $children
+    this.$children
+    // $ref
+    this.$refs.hello.属性
+    this.$refs.hello.方法
+    // $parent
+    this.$parent.属性
+    this.$parent.方法
+  ```
 
 </details>
 
@@ -584,6 +592,28 @@
       - 支持Promise API
       - 客户端防止CSRF（网站恶意利用）
       - 提供了一些并发请求的接口
+      
+</details>
+
+#### SSR/CSR/SPA
+<details>
+  <summary style="color: #3eaf7c;">
+    <span style="cursor:pointer;color:#3eaf7c;font-size:14px;">解析</span>
+  </summary>
+
+  - **SSR**：
+    - 定义： 服务器直接生成HTML 文档返回给浏览器，但也没交互能力有限，适合任何后端语言 
+    - 优点： 响应速度快，有利SEO；
+    - 缺点： 前后端代码混合，不利开发和维护，前后端代码不分离
+
+  - **CSR**
+    - 定义： 页面初始加载的HTML 文档中无核心内容，需要执行 js 文件，由浏览器动态生成页面，并通过 js 进行页面交互事件与状态管理
+    - 优点:  适合前后端分离开发，方便维护，单页应用中几乎都是客户端渲染
+    - 缺点： 首次加载慢， 不利SEO
+
+  - **SPA**：（单页应用程序）
+    - 优点：页面盗号不用刷新整个页面，体验好，有利于前后端分离开发
+    - 缺点：不利于 seo，因为单页面应用中都是使用客户端渲染方式； 首次加载慢，因为第一次要加载很多资源
       
 </details>
 
