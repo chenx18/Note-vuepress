@@ -1,10 +1,47 @@
 # vue 总结
-  [2020 Vue经典面试题](https://blog.csdn.net/MingL520/article/details/106014105)    
-  [Vue常见面试题总结 必看](https://zhuanlan.zhihu.com/p/97950650)
-  [2020年，vue面试遇到的问题](https://zhuanlan.zhihu.com/p/103763164)
-  - vue 两个核心：
-    - 数据驱动： ViewModel，保证数据和视图的一致性 
-    - 组件化
+  [2020 Vue经典面试题](https://blog.csdn.net/MingL520/article/details/106014105)      
+  [Vue常见面试题总结 必看](https://zhuanlan.zhihu.com/p/97950650)  
+  [2020年，vue面试遇到的问题](https://zhuanlan.zhihu.com/p/103763164)  
+  [Vue常见面试题总结](https://zhuanlan.zhihu.com/p/97950650)  
+
+  - vue 两个核心： 数据驱动： ViewModel，保证数据和视图的一致性；组件化
+
+#### 目录
+<details>
+  <summary style="color: #3eaf7c;">
+    <span style="cursor:pointer;color:#3eaf7c;font-size:14px;">解析</span>
+  </summary>
+
+  - mvvm mvc 核心
+  - Object.defineProperty()
+  - 虚拟dom
+  - 生命周期
+  - 组件通信
+  - computed 、getter和setter
+  - watch
+  - 重置data  ->Object.assign() 
+  - 定义全局方法 -> Vue.prototype.方法名称
+  - this.$set
+  - this.$nextTick
+  - v-model
+  - v-for key
+  - v-if / v-show / v-html / v-bind/v-on
+  - 自定义指令及生命周期
+  - 强制刷新组件 ① v-if ② this.$forceUpdate
+  - 首页的加载速度
+  ------------------------------------------
+  - router route 
+  - active-class route-link
+  - keep-alive
+  - 跳转 传参
+  - 钩子守卫 动态加载路由 响应路由参数的变化
+  --------------------------------------------
+  - vuex、属性
+  ----------------------------------------------------------------
+  - axios、特点、拦截器、比较
+
+</details>
+
 
 #### mvvm mvc是什么区别 原理
 <details>

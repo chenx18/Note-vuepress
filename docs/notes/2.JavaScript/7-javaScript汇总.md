@@ -3,104 +3,6 @@
 
 <!-- 2. 展开所有折叠区域代码的快捷：ctrl +k      ctrl + J ;  先按下  ctrl 和 K，再按下 ctrl 和 J   -->
 
-<!-- html css -->
-<!-- - 前端页面有哪三层构成
-- Doctype的作用,严格模式与混杂模式如何区分
-- HTML结构的语义化
-- HTML 与 XHTML 区别
-- 盒子模型有哪些
-- BFC认识
-- link和@inmport的区别
-- 行内元素和块元素区别
-- 浮动的几种方式, 清除浮动
-- 浮动元素引起的问题和解决办法
-- 常见的几种居中的方法有
-- CSS3 的 Flexbox（弹性盒布局模型），以及适用场景
-- CSS3新特性
-- html5新特性
-- 常见兼容性问题 -->
-
-<!-- 基础 -->
-<!-- - let cont var 区别
-- 作用域与变量声明提升
-- 数据类型有哪些 
-- 栈 和 堆 认识，
-- 栈 和 堆 区别和联系
-- 栈和队列的区别
-- 内存分配
-- 垃圾回收方法
-- js中的内存泄露
-- 严格模式的限制 -->
-
-<!-- 数据类型 -->
-<!-- - null和undefined的区别
-- ES6新特性
-- 数组常用方法 es6扩展
-- 数组去重 
-- 判断一个对象是不是数组
-- Symbol 值的强制类型转换
-- 深拷贝浅拷贝 -->
-
-<!-- 函数 -->
-<!-- - this 理解
-- call，apply 区别和作用
-- 闭包理解 为什么要用 -->
-
-<!-- 面向对象 -->
-<!-- - 创建对象的几种方式
-- 继承的几种实现方式
-- 原型 原型链 认识和特点
-- 获取原型方法
-- new操作符具体干了什么
-- 用过哪些设计模式 -->
-
-<!-- 异步编程 -->
-<!-- - 异步操作认识
-- 同步和异步的区别
-- promise 认识 实现
-- Async/Await 认识
-- Generator 认识
-- setTimeout 和 setInterval 区别 -->
-
-<!-- 模块化开发 -->
-<!-- - 模块化开发认识
-- js 的几种模块规范
-- AMD 和 CMD 规范的区别
-- ES6 模块与 CommonJS 模块区别
-- requireJS 的核心原理
-- Es6 class语法，为什么会出现 class 这种东西
-- import和export命令以及export和export default的区别 -->
-
-<!-- 浏览器 -->
-<!-- - DOM 和 BOM
-- DOM 操作（添加、移除、移动、复制、创建和查找）
-- 事件是什么
-- 如何阻止冒泡
-- 三种事件模型
-- 事件委托
-- iframe的优缺点
-- 浏览器存储有哪些
-- cookie、localStorage、sessionStorage、indexDB -->
-
-<!-- http ajax -->
-<!-- - JavaScript 的同源策略
-- 为什么要有同源限制
-- 解决跨域问题
-- http和https的区别
-- TCP传输的三次握手四次挥手策略
-- URL回车后的过程
-- GET和POST的区别，何时使用POST
-- HTTP状态码
-- 创建ajax过程
-- XSS 攻击？如何防范 XSS 攻击 -->
-
-<!-- 性能 -->
-<!-- - 优雅降级和渐进增强
-- 线程与进程的区别
-- 对前端架构师的理解 -->
-
-
-
 参考文章：
 [前端高频面试题整理 必看](https://mp.weixin.qq.com/s/L4Q1fIlqXwI6eL-mUad2_Q)    
 [2020 前端面试：第一波面试题总结](https://www.cnblogs.com/ZXH-null/p/12294427.html)    
@@ -112,7 +14,42 @@
 [2020年，javascript面试遇到的问题](https://zhuanlan.zhihu.com/p/105730276)
 
 
-<!-- 基础 -->
+#### 目录
+<details>
+  <summary style="color: #3eaf7c;">
+    <span style="cursor:pointer;color:#3eaf7c;font-size:14px;">解析</span>
+  </summary>
+
+  - let const var 变量提升
+  - 作用域 作用域链
+  - 数据类型、堆、栈
+  - 内存分配、垃圾回收
+  - 内存泄露、重绘重排
+  - this call apply bind
+  - 闭包
+  - 对象创建方式 、new
+  - 原型、原型链
+  - null、undefined
+  - 严格模式
+  - es6新增
+  - 数组去重、数组判断
+  - typeof、instanceof
+  - 深拷贝浅拷贝
+  - 同步异步
+  - promise、async/await
+  - Generator
+  - setTimeout、setInterval
+  - 模块化、commonJs
+  - module
+  - DOM、BOM
+  - 事件模型 事件委托 事件冒泡
+  - 同源策略 跨域解决方法
+  - ajax使用 post/get区别
+  - url回车  http
+  - xss攻击
+  - 性能优化
+
+</details>
 
 #### let cont var 区别
   <details>
