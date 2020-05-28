@@ -1,0 +1,50 @@
+## React 生命周期
+ ![image](./../assets/images/reacht-life.png)
+##### 组件的生命周期可分成三个状态：
++ Mounting：已插入真实 DOM -> 初始
++ Updating：正在被重新渲染 -> 更新
++ Unmounting：已移出真实 DOM -> 销毁
+
+##### React生命周期
++ **初始化**
+  1. componentWillMount()
+  ```
+    1. 在 渲染前 调用,在客户端也在服务端。
+    2. 组件初始化时调用，以后组件更新不调用，整个生命周期只调用一次，此时可以修改state。
+  ```
+  2. componentDidMount()
+  ```
+    1. 组件渲染之后调用，只调用一次;
+    2. 可以通过this.getDOMNode()来进行访问;
+    3. 可以在这个方法中调用setTimeout, setInterval或者发送AJAX请求等操作(防止异步操作阻塞UI)。
+  ```
+
++ **更新**
+  3. componentWillReceiveProps(nextProps)
+  ```
+    1. 组件初始化时不调用，组件接受新的props时调用；
+  ```
+  4. shouldComponentUpdate(nextProps, nextState)
+  ```
+    1. 返回一个布尔值;
+    2. 在组件接收到新的props或者state时被调用,
+       此时可以设置在此对比前后两个props和state是否相同，
+       如果相同则返回false阻止更新;
+  ```
+  5. componentWillUpdate(nextProps, nextState)
+  ```
+    1. 组件初始化时不调用，只有在组件将要更新时才调用，此时可以修改state;
+  ```
+  6. componentDidUpdate(prevProps, prevState)
+  ```
+    1. 在初始化时不会被调用;
+    2. 在组件完成更新后调用，可以操作组件更新的DOM;
+    3. prevProps和prevState这两个参数指的是组件更新前的props和state
+  ```
+
++ **卸载**
+  7. componentWillUnmount()
+  ```
+  1. 组件将要卸载时调用，一些事件监听和定时器需要在此时清除;
+  ```
+

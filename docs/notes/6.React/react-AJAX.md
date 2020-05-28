@@ -1,0 +1,193 @@
+## React AJAX
+```
+  注：react中没有提供专门的请求数据的模块。但是我们可以使用任何第三方请求数据模块实现请求数据；
+```
+##### React 跨域代理配置
+1. 如果只是单个ip可直接在package.json文件配置
+```js
+"devDependencies": {
+    "node-sass": "^4.11.0",
+    "sass-loader": "^7.1.0"
+  }, 
+  "proxy": "http://127.x.x.x:xxxx"
+  // 注：此时配置的代理只接受字符串，对象将直接报错 无法启动；
+```
+2. 配置多IP
+```js
+// 因为在 package.json 中proxy只能是字符串不能配置对象类型；所以要借助插件完成配置
+// npm install http-proxy-middleware --save
+// 新建setupProxy.js ,无需引用 程序自动去读取改文件；
+const proxy = require('http-proxy-middleware');
+module.exports = function(app) {
+  app.use(proxy("/api", {
+    target: "http://127.0.0.x:xxxx",
+    changeOrigin: true,
+    pathRewrite: {
+      "^/api": ""
+    }
+  }));
+  app.use(proxy("/riskApi", {
+    target: "http://127.0.0.x:xxxx",
+    changeOrigin: true,
+    pathRewrite: {
+      "^/riskApi": ""
+    }
+  }))
+}
+```
+##### axios
+1. 安装： npm install axios  --save  or  npm install axios  --save
+2. 引入：在哪里使用就在哪里引入import axios from 'axios'
+3. 使用
+```js
+var api='http://www.phonegap100.com/appapi.php?a=getPortalList&catid=20';
+axios.get(api)
+  .then(function (response) {
+      console.log(response);
+  })
+  .catch(function (error) {
+      console.log(error);
+  });
+```
+##### axios封装
+1. 在src目录下新建一个http.js的文件 代码如下；
+```js
+import axios from 'axios';
+
+//添加请求拦截器
+axios.interceptors.request.use(config => {
+  if (localStorage.getItem('token')) {
+    //在发送请求之前做某事，比如加一个loading
+   ........
+  return config;
+}, err => {
+  //请求错误时做些事
+  return Promise.reject(err);
+});
+
+//添加响应拦截器
+axios.interceptors.response.use(response => {
+  checkStatus(response);
+  return response
+}, err => {
+  // 系统错误，比如500、404等
+  checkStatus(err.response);
+  return err.response;
+});
+// 状态码提示
+function checkStatus(response) {
+  // 如果http状态码正常，则直接返回数据
+  if (response && (response.status === 200 || response.status === 304)) {
+    return response;
+  }
+  // 异常状态下，把错误信息返回去
+  else if (response.status === 400) {
+    alert('请求无效')
+  } else if (response.status === 401) {
+    alert('未登录或登录已失效,请重新登录');
+  } else if (response.status === 404) {
+    alert('请求无效')
+  } else if (response.status === 500) {
+    alert('服务器错误')
+  }
+}
+
+//  配置post get 方法
+export default {
+  get(url, params) {
+    return axios({
+      method: 'get',
+      url,
+      params, // get 请求时带的参数
+      headers: {
+        'FunId': '1',
+        'Language': 'zh-CN'
+      }
+    })
+  },
+  
+  post(url, data) {
+    return axios({
+      method: 'post',
+      url,
+      data: data,
+      headers: {
+        'FunId': '1',
+        'Language': 'zh-CN'
+      }
+    })
+  },
+}
+```
+
+2. 在src目录下新建一个api.js的文件 代码如下；
+```js
+注：api.js主要规范所有api接口
+import http from './../untils/http'; // import 刚配置的http.js
+class user {
+  userLogin = params => {
+    return http.post(`/api/UserManage/Authentication/Login`, params);
+  }
+  getData = params => {
+    return http.get(`/api/UserManage/Authentication/list`, params);
+  }
+}
+export default new user
+```
+
+3. 使用
+```js
+解决跨域，配置代理 -> 编写配置代码 -> 统一api 后，使用如下；
+在需要调用api的文件引起我们的api文件
+import React, { Component } from 'react';
+import User from './../../api/user';  // import 刚刚配置的api文件
+import md5 from 'js-md5';
+class Login extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      title: 'Home',
+      userName: '',
+      userPwd: ''
+    }
+  }
+  submit=() => {
+    let params = {
+      UserAccount: this.state.userName,
+      UserPower: md5(this.state.userPwd).toUpperCase(),
+    };
+    User.userLogin(params).then(res => {   // 调用
+      console.log(res);
+    })
+  }
+  render() {
+    return(
+      <div className="login-box">
+        <form  className="login-form">
+          <p className="form-title"> Login...</p>
+          <label> <input type="text" placeholder="输入用户名"/></label> <br/>
+          <label> <input type="password" placeholder="输入密码"/></label> <br/>
+          <label> <input type="submit" onClick={this.submit} value='登入'/></label>
+        </form>
+      </div>
+    )
+  }
+}
+export default Login;
+```
+
+##### fetch-jsonp
+1. 安装 npm install fetch-jsonp  --save
+2. 引入：import fetchJsonp from 'fetch-jsonp'
+3. 使用：
+```js
+fetchJsonp('/users.jsonp')
+  .then(function(response) {
+    return response.json()
+  }).then(function(json) {
+    console.log('parsed json', json)
+  }).catch(function(ex) {
+    console.log('parsing failed', ex)
+  })
+```
+##### 
