@@ -596,15 +596,17 @@ console.log(a1) // 34.5
     */
     var arr = ['one','two','three','one','three','two','four'];
     let el = new Set(arr);
-    console.log(el); // ['one','two','three','four'];
+    console.log(el); 
+    // ['one','two','three','four'];
   ```
 
   #### 10.2 利用 filter去重
-  ```js
-    let arr = ['one','two','three','one','three','two','four'];
-    let el = arr.filter((item,index)=>arr.indexOf(item)===index);
-    console.log(el); // ['one','two','three','four'];
-  ```
+```js
+  let arr = ['one','two','three','one','three','two','four'];
+  let el = arr.filter((item,index)=>arr.indexOf(item)===index);
+  console.log(el); 
+  // ['one','two','three','four'];
+```
 
   #### 10.3 利用 Map 数据结构去重
   ```js
@@ -622,7 +624,8 @@ console.log(a1) // 34.5
       return array ;
     }
     var arr = [1,1,'true','true',true,true,15,15,false,false, undefined,undefined, null,null, NaN, NaN,'NaN', 0, 0, 'a', 'a',{},{}];
-    console.log(unique(arr))
+    console.log(arrayNonRepeatfy(arr)) 
+    // [1, "true", true, 15, false, undefined, null, NaN, "NaN", 0, "a", {…}, {…}]
   ```
 
   #### 10.4 利用includes
@@ -647,75 +650,75 @@ console.log(a1) // 34.5
 
   #### 10.5 利用对象特性去重 (Object.keys)
   ##### （1）对象方法 和 for 循环
-  ```js
-    /*
-      1.声明一个对象 obj,利用对象特性
-      2.循环每一项复印，使用 keys(values) 方法取出 key 值
-    */
-    var arr = ['one','two','three','one','three','two','four'];
-    var obj = {};
-    for(var i=0;i<arr.length;i++){
-        obj[arr[i]] = arr[i];
-    };
-    var el =  Object.keys(obj);
-    console.log(el) // ['one','two','three','four'];
-  ```
+```js
+  /*
+    1.声明一个对象 obj,利用对象特性
+    2.循环每一项复印，使用 keys(values) 方法取出 key 值
+  */
+  var arr = ['one','two','three','one','three','two','four'];
+  var obj = {};
+  for(var i=0;i<arr.length;i++){
+      obj[arr[i]] = arr[i];
+  };
+  var el =  Object.keys(obj);
+  console.log(el) // ['one','two','three','four'];
+```
 
   ##### （2）对象方法 和 arr.forEach
-  ```js
-    /* 
-      1. 和上面方法一致，只不过是使用了 forEach
-    */
-    var arr = ['one','two','three','one','three','two','four'];
-    var obj = {};
-    arr.forEach(function(ele,index,arr){
-        obj[arr[index]] = arr[index];
-    });
-    var el =  Object.keys(obj);
-    console.log(el) // ['one','two','three','four'];
-  ```
+```js
+  /* 
+    1. 和上面方法一致，只不过是使用了 forEach
+  */
+  var arr = ['one','two','three','one','three','two','four'];
+  var obj = {};
+  arr.forEach(function(ele,index,arr){
+      obj[arr[index]] = arr[index];
+  });
+  var el =  Object.keys(obj);
+  console.log(el) // ['one','two','three','four'];
+```
 
   #### 10.6 利用for嵌套for，然后splice去重（ES5中最常用）
-  ```js
-    function unique(arr){            
-      for(var i=0; i<arr.length; i++){
-        for(var j=i+1; j<arr.length; j++){
-          if(arr[i]==arr[j]){         //第一个等同于第二个，splice方法删除第二个
-            arr.splice(j,1);
-            j--;
-          }
+```js
+  function unique(arr){            
+    for(var i=0; i<arr.length; i++){
+      for(var j=i+1; j<arr.length; j++){
+        if(arr[i]==arr[j]){         //第一个等同于第二个，splice方法删除第二个
+          arr.splice(j,1);
+          j--;
         }
       }
-    return arr;
     }
-    var arr = [1,1,'true','true',true,true,15,15,false,false, undefined,undefined, null,null, NaN, NaN,'NaN', 0, 0, 'a', 'a',{},{}];
-    console.log(unique(arr))
-    //[1, "true", 15, false, undefined, NaN, NaN, "NaN", "a", {…}, {…}]     //NaN和{}没有去重，两个null直接消失了
-    // 双层循环，外层循环元素，内层循环时比较值。值相同时，则删去这个值。
-    // 想快速学习更多常用的ES6语法，可以看我之前的文章《学习ES6笔记──工作中常用到的ES6语法》。
-      
-  ```
+  return arr;
+  }
+  var arr = [1,1,'true','true',true,true,15,15,false,false, undefined,undefined, null,null, NaN, NaN,'NaN', 0, 0, 'a', 'a',{},{}];
+  console.log(unique(arr))
+  //[1, "true", 15, false, undefined, NaN, NaN, "NaN", "a", {…}, {…}]     //NaN和{}没有去重，两个null直接消失了
+  // 双层循环，外层循环元素，内层循环时比较值。值相同时，则删去这个值。
+  // 想快速学习更多常用的ES6语法，可以看我之前的文章《学习ES6笔记──工作中常用到的ES6语法》。
+    
+```
 
   #### 10.7 利用 indexOf() 和 lastIndexOf() 去重
-  ```js
-    /*
-      indexOf：从左往右查找目标字符串，是否包含 Value;
-              如果包含，返回第一次出现的索引;
-              如果不包含，返回 -1
-      indexOf 和 lastIndexOf() 方法一样
-      步骤：
-      1. 先声明一个空数组，用来存放去重后的数据
-      2. 遍历数组，判断每一项
-    */
-    let arr = ['one','two','three','one','three','two','four'];
-    let indexArr = [];
-    arr.forEach(item => {
-      if(indexArr.indexOf(item)===-1){
-          indexArr.push(item);
-      };
-    });
-    console.log(indexArr); // ['one','two','three','four'];
-  ```
+```js
+  /*
+    indexOf：从左往右查找目标字符串，是否包含 Value;
+            如果包含，返回第一次出现的索引;
+            如果不包含，返回 -1
+    indexOf 和 lastIndexOf() 方法一样
+    步骤：
+    1. 先声明一个空数组，用来存放去重后的数据
+    2. 遍历数组，判断每一项
+  */
+  let arr = ['one','two','three','one','three','two','four'];
+  let indexArr = [];
+  arr.forEach(item => {
+    if(indexArr.indexOf(item)===-1){
+        indexArr.push(item);
+    };
+  });
+  console.log(indexArr); // ['one','two','three','four'];
+```
 
  
 
