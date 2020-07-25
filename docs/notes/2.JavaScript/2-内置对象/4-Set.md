@@ -139,8 +139,10 @@ let difference = new Set([...a].filter(x => !b.has(x))); // {1}
   // WeakSet 是一个构造函数，可以使用new命令，创建 WeakSet 数据结构。
   const a = [[1, 2], [3, 4]];
   const b = [3, 4];
+  const c = {name: 'zhang'}
   const aws = new WeakSet(a);   // {[1, 2], [3, 4]}
   const bws = new WeakSet(b);   // Uncaught TypeError: Invalid value used in weak set(…)
+  const cws = new WeakSet(c);   // Uncaught TypeError: Invalid value used in weak set(…)
 
   // 所以注意，是a数组的成员成为 WeakSet 的成员，而不是a数组本身。这意味着，数组的成员只能是对象。
 ```
